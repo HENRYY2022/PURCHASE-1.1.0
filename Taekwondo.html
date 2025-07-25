@@ -64,7 +64,27 @@
                        
                     </ul>
                 </div>
-                
+                <div class="navbar align-self-center d-flex">
+                    <div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
+                            <div class="input-group-text">
+                                <i class="fa fa-fw fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a class="nav-icon position-relative text-decoration-none" href="carrito.html">
+                        <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+                        <span id="carrito-contador" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-dark">
+                          0
+                        </span>
+                      </a>
+                    <a class="nav-icon position-relative text-decoration-none" href="#">
+                        <i class="fa fa-fw fa-user text-dark mr-3"></i>
+                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
+                    </a>
+                   </div>
     
             </div>
 
@@ -311,6 +331,35 @@
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/templatemo.js"></script>
     <script src="assets/js/custom.js"></script>
+    <script>
+        // Mostrar contador del carrito al cargar
+        document.addEventListener("DOMContentLoaded", () => {
+          actualizarContador();
+        });
+      
+        // Botones para agregar productos al carrito
+        document.querySelectorAll(".agregar-carrito").forEach(boton => {
+          boton.addEventListener("click", () => {
+            const id = boton.dataset.id;
+            const nombre = boton.dataset.nombre;
+            const precio = boton.dataset.precio;
+      
+            const producto = { id, nombre, precio };
+            let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+            carrito.push(producto);
+            localStorage.setItem("carrito", JSON.stringify(carrito));
+      
+            actualizarContador();
+          });
+        });
+      
+        // Actualiza el número en el ícono del carrito
+        function actualizarContador() {
+          const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+          const contador = document.getElementById("carrito-contador");
+          if (contador) contador.textContent = carrito.length;
+        }
+      </script>
  
 </body>
 

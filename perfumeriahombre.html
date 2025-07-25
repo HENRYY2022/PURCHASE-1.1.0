@@ -1310,7 +1310,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <center><a href="https://wa.me/573239817343?text={Hola, he visto los productos y estoy interesado en hacer una compra.}"target="_blank" class="h3 text-success border-bottom pb-3 border-light logo">COMPRAR</a></center>
+                                <center><a href="https://wa.me/573239817343?text=Hola, he visto los productos y estoy interesado en hacer una compra."target="_blank" class="h3 text-success border-bottom pb-3 border-light logo">COMPRAR</a></center>
                                  <ul class="list-unstyled d-flex justify-content-center mb-1">
                                     <li>
                                                                             <i class="text-warning fa fa-star"></i>
@@ -1505,6 +1505,35 @@
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/templatemo.js"></script>
     <script src="assets/js/custom.js"></script>
+    <script>
+        // Mostrar contador del carrito al cargar
+        document.addEventListener("DOMContentLoaded", () => {
+          actualizarContador();
+        });
+      
+        // Botones para agregar productos al carrito
+        document.querySelectorAll(".agregar-carrito").forEach(boton => {
+          boton.addEventListener("click", () => {
+            const id = boton.dataset.id;
+            const nombre = boton.dataset.nombre;
+            const precio = boton.dataset.precio;
+      
+            const producto = { id, nombre, precio };
+            let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+            carrito.push(producto);
+            localStorage.setItem("carrito", JSON.stringify(carrito));
+      
+            actualizarContador();
+          });
+        });
+      
+        // Actualiza el número en el ícono del carrito
+        function actualizarContador() {
+          const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+          const contador = document.getElementById("carrito-contador");
+          if (contador) contador.textContent = carrito.length;
+        }
+      </script>
  
 </body>
 
