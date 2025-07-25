@@ -265,8 +265,17 @@
       doc.text("Teléfono: 323 9817343", 60, 32);
     
       let y = 45;
-      doc.setFontSize(14);
-      doc.text("Factura de Compra", 15, y); y += 10;
+
+
+      // Obtener y actualizar el número de factura
+let facturaNro = localStorage.getItem("numeroFactura") || 1;
+facturaNro = parseInt(facturaNro);
+localStorage.setItem("numeroFactura", facturaNro + 1);
+
+// Mostrar número en PDF
+doc.setFontSize(14);
+doc.text(`Factura #${String(facturaNro).padStart(6, "0")}`, 15, y);
+y += 10;
       doc.setFontSize(11);
       doc.text(`Fecha: ${new Date().toLocaleString()}`, 15, y); y += 7;
       doc.text(`Cliente: ${nombre}`, 15, y); y += 7;
@@ -286,14 +295,36 @@
       y += 10;
       doc.text(`TOTAL: $${total.toFixed(2)}`, 15, y);
     
-      // Mostrar PDF
-      const pdfBlob = doc.output("blob");
-      const pdfUrl = URL.createObjectURL(pdfBlob);
-      window.open(pdfUrl, "_blank");
     
+   
+
+// Mostrar factura en nueva pestaña
+const pdfBlob = doc.output("blob");
+const pdfUrl = URL.createObjectURL(pdfBlob);
+window.open(pdfUrl, "_blank");
+
+
+// Descargar factura con nombre personalizado
+doc.save(`factura_${String(facturaNro).padStart(6, "0")}.pdf`);
+
+// Enviar resumen a WhatsApp
+const mensaje = encodeURIComponent(
+  `🧾 *PURCHASE NETWORK - Nueva compra*
+📄 Factura #${String(facturaNro).padStart(6, "0")}
+👤 Nombre: ${nombre}
+🪪 Cédula: ${cedula}
+📱 Celular: ${celular}
+💳 Pago: ${metodoPago}
+🛒 Productos:
+${carrito.map((p, i) => `${i + 1}. ${p.nombre} - $${p.precio}`).join("\n")}
+💰 Total: $${total.toFixed(2)}`
+);
+window.open(`https://wa.me/573239817343?text=${mensaje}`, "_blank");
+
+   
       // Limpiar carrito
       localStorage.removeItem("carrito");
-      document.getElementById("lista-carrito").innerHTML = "<p class='text-center'>Gracias por tu compra.</p>";
+      document.getElementById("lista-carrito").innerHTML = "<p class='text-center'>Gracias por tu compra.- Recuerda enviar la factura en pdf al WhatsApp de Purchase Network para coordinar pago y entrega.</p>";
       document.getElementById("carrito-contador").textContent = "0";
     });
     </script>
