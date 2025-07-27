@@ -295,6 +295,17 @@ y += 10;
       y += 10;
       doc.text(`TOTAL: $${total.toFixed(2)}`, 15, y);
     
+      const mensajeFinal = "Gracias por tu compra - no olvides enviar este comprobante al WhatsApp de PURCHASE NETWORK.";
+doc.setFontSize(12);
+doc.setTextColor(0, 0, 0);
+
+// Centrar el texto
+const pageWidth = doc.internal.pageSize.getWidth();
+const textWidth = doc.getTextWidth(mensajeFinal);
+const xCentered = (pageWidth - textWidth) / 2;
+
+y += 15; // Espacio después del total
+doc.text(mensajeFinal, xCentered, y);
     
    
 
